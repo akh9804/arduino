@@ -49,6 +49,8 @@ form.addEventListener("submit", function(e) {
 cancelBtn.addEventListener("click", function(e) {
   e.preventDefault();
   executionBtn.removeAttribute("disabled");
+  targetTemp.removeAttribute("disabled");
+  targetTime.removeAttribute("disabled");
   socket.emit("turn off");
 });
 
