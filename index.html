@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>아두이노 프로젝트</title>
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+    <!-- CSS Static File -->
+    <link rel="stylesheet" href="index.css" />
+    <!-- Import socket io & jquery -->
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <!-- Import chart.js -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.js"
+      integrity="sha256-qSIshlknROr4J8GMHRlW3fGKrPki733tLq+qeMCR05Q="
+      crossorigin="anonymous"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css"
+      integrity="sha256-IvM9nJf/b5l2RoebiFno92E5ONttVyaEEsdemDC6iQA="
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"
+      integrity="sha256-arMsf+3JJK2LoTGqxfnuJPFTU4hAK57MtIPdFpiHXOU="
+      crossorigin="anonymous"
+    ></script>
+    <!-- Import axios -->
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+      <div class="container">
+        <span class="navbar-brand mb-0 h1">Arduino_Raspberry Project</span>
+      </div>
+    </nav>
+    <div class="container bottom__div">
+      <form id="form">
+        <div class="form-group">
+          <label for="target__temp">목표 온도(℃)</label>
+          <input
+            type="number"
+            name="target__temp"
+            id="target-temp"
+            min="40"
+            max="90"
+            required
+          />
+          <small class="form-text text-muted"
+            >40 - 90도 이내의 온도를 입력해주세요.</small
+          >
+        </div>
+        <div class="form-group">
+          <label for="target__time">목표 시간(분)</label>
+          <input
+            type="number"
+            name="target__time"
+            id="target-time"
+            min="0"
+            max="720"
+            required
+          />
+          <small class="form-text text-muted">12시간까지 가능합니다.</small>
+        </div>
+        <button type="submit" class="btn btn-success" id="execution">
+          실행
+        </button>
+      </form>
+      <div class="list-div">
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item">현재 온도</li>
+          <li class="list-group-item" id="current-temp"></li>
+        </ul>
+        <ul class="list-group list-group-horizontal">
+          <li class="list-group-item">경과 시간</li>
+          <li class="list-group-item" id="current-time"></li>
+        </ul>
+        <button type="button" class="btn btn-danger">취소</button>
+      </div>
+      <div class="chart__div">
+        <canvas id="temp__chart" width="400" height="200"></canvas>
+      </div>
+      <div class="chart__div">
+        <canvas id="pid__chart" width="400" height="200"></canvas>
+      </div>
+      <div class="image__div"></div>
+    </div>
+  </body>
+  <script src="chart.js"></script>
+</html>
