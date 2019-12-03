@@ -3,7 +3,7 @@ let tempTime = [];
 let pidData = [];
 let pidTime = [];
 
-let socket = io.connect("http://localhost:4000");
+let socket = io.connect("https://guarded-brook-94951.herokuapp.com/");
 
 const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
