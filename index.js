@@ -42,6 +42,9 @@ io.on("connection", socket => {
     console.log(message);
     setInterval(function() {
       socket.emit("send", data);
-    }, 5000);
+    }, 1000);
+  });
+  socket.on("turn off", function() {
+    socket.disconnect();
   });
 });

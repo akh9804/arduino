@@ -7,6 +7,18 @@ let socket = io.connect("http://localhost:4000");
 
 const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
+const cancelBtn = document.getElementById("cancel");
+const currentTemp = document.getElementById("current-temp");
+const currentTime = document.getElementById("current-time");
+
+function getLastItem(obj) {
+  let resultObj = {
+    temp: obj.temp[obj.temp.length - 1].temp,
+    time: obj.temp[obj.temp.length - 1].time
+  };
+
+  return resultObj;
+}
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
@@ -23,11 +35,21 @@ form.addEventListener("submit", function(e) {
     }
   });
 
-  targetTemp.value = null;
-  targetTime.value = null;
+  targetTemp.setAttribute("disabled", true);
+  targetTime.setAttribute("disabled", true);
+
+  if (socket.disconnected) {
+    socket.connect();
+  }
 
   socket.emit("turn on", { success: true });
   executionBtn.setAttribute("disabled", true);
+});
+
+cancelBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+  executionBtn.removeAttribute("disabled");
+  socket.emit("turn off");
 });
 
 socket.on("send", function(data) {
@@ -35,14 +57,20 @@ socket.on("send", function(data) {
   tempTime = [];
   pidData = [];
   pidTime = [];
+
   data.temp.forEach(element => {
     tempData.push(element.temp);
     tempTime.push(element.time);
   });
+
   data.pid.forEach(element => {
     pidData.push(element.pid);
     pidTime.push(element.time);
   });
+
+  currentTemp.innerText = getLastItem(data).temp;
+  currentTime.innerText = getLastItem(data).time;
+
   const temp = document.getElementById("temp__chart");
   const pid = document.getElementById("pid__chart");
 
@@ -63,6 +91,7 @@ socket.on("send", function(data) {
     },
     options: {
       responsive: true,
+      animation: false,
       title: {
         display: true,
         text: "라인 차트 테스트"
@@ -118,6 +147,7 @@ socket.on("send", function(data) {
     },
     options: {
       responsive: true,
+      animation: false,
       title: {
         display: true,
         text: "PID 그래프"
