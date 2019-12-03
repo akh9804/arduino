@@ -10,6 +10,8 @@ const executionBtn = document.getElementById("execution");
 const cancelBtn = document.getElementById("cancel");
 const currentTemp = document.getElementById("current-temp");
 const currentTime = document.getElementById("current-time");
+const targetTemp = document.getElementById("target-temp");
+const targetTime = document.getElementById("target-time");
 
 function getLastItem(obj) {
   let resultObj = {
@@ -22,9 +24,6 @@ function getLastItem(obj) {
 
 form.addEventListener("submit", function(e) {
   e.preventDefault();
-
-  const targetTemp = document.getElementById("target-temp");
-  const targetTime = document.getElementById("target-time");
 
   axios({
     method: "post",
