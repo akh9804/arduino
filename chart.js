@@ -3,7 +3,7 @@ let tempTime = [];
 let pidData = [];
 let pidTime = [];
 
-let socket = io.connect("https://guarded-brook-94951.herokuapp.com/");
+let socket = io.connect("http://localhost:4000");
 
 const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
@@ -13,17 +13,13 @@ const currentTime = document.getElementById("current-time");
 const targetTemp = document.getElementById("target-temp");
 const targetTime = document.getElementById("target-time");
 
-function getLastItem(obj) {
-  let resultObj = {
-    temp: obj.temp[obj.temp.length - 1].temp,
-    time: obj.temp[obj.temp.length - 1].time
-  };
-
-  return resultObj;
-}
-
 form.addEventListener("submit", function(e) {
   e.preventDefault();
+
+  tempData = [];
+  tempTime = [];
+  pidData = [];
+  pidTime = [];
 
   axios({
     method: "post",
@@ -53,24 +49,17 @@ cancelBtn.addEventListener("click", function(e) {
   socket.emit("turn off");
 });
 
-socket.on("send", function(data) {
-  tempData = [];
-  tempTime = [];
-  pidData = [];
-  pidTime = [];
+socket.on("send", function(raw_data) {
+  let data = JSON.parse(raw_data).experiment[0];
+  console.log(data);
 
-  data.temp.forEach(element => {
-    tempData.push(element.temp);
-    tempTime.push(element.time);
-  });
+  tempData.push(data.temperature);
+  pidData.push(data.pid);
+  tempTime.push(data.second);
+  pidTime.push(data.second);
 
-  data.pid.forEach(element => {
-    pidData.push(element.pid);
-    pidTime.push(element.time);
-  });
-
-  currentTemp.innerText = getLastItem(data).temp;
-  currentTime.innerText = getLastItem(data).time;
+  currentTemp.innerText = data.temperature;
+  currentTime.innerText = data.second;
 
   const temp = document.getElementById("temp__chart");
   const pid = document.getElementById("pid__chart");
