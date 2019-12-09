@@ -5,7 +5,6 @@ const fs = require("fs");
 const app = express();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
-const redisAdapter = require("socket.io-redis");
 
 const PORT = process.env.PORT || 4000;
 
@@ -39,8 +38,6 @@ app.post("/", (req, res) => {
 
   res.end();
 });
-
-io.adapter(redisAdapter({ host: "localhost", port: 6379 }));
 
 io.on("connection", socket => {
   console.log("socket io is connected");
