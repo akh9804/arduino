@@ -61,7 +61,7 @@ socket.on("already on", function(data) {
 });
 
 socket.on("send", function(raw_data) {
-  let data = JSON.parse(raw_data).experiment[0];
+  let data = JSON.parse(raw_data).experiment;
   console.log(data);
 
   tempData.push(data.temperature);
