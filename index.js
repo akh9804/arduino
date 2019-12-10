@@ -21,8 +21,8 @@ app.get("/", (req, res) => {
 app.post("/", (req, res) => {
   const tempJSON = JSON.stringify({
     Option: {
-      t_temp: req.body.temp,
-      t_time: req.body.time,
+      t_temp: Number(req.body.temp),
+      t_time: Number(req.body.time),
       start_exp: 1
     }
   });
