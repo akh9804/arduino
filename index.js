@@ -28,7 +28,7 @@ app.post("/", (req, res) => {
     }
   });
 
-  fs.writeFile("../Capstone_program/experiment.json", tempJSON, err => {
+  fs.writeFile("../experiment.json", tempJSON, err => {
     if (err) {
       console.log("Error writing file", err);
     } else {
@@ -42,7 +42,7 @@ app.post("/", (req, res) => {
 io.on("connection", socket => {
   console.log("socket io is connected");
 
-  fs.readFile("../Capstone_program/experiment.json", "utf-8", (err, data) => {
+  fs.readFile("../experiment.json", "utf-8", (err, data) => {
     data = JSON.parse(data).Option;
     if (data["start_exp"] === 1) {
       socket.emit("already on", {
@@ -55,13 +55,9 @@ io.on("connection", socket => {
   socket.on("turn on", function(message) {
     console.log(message);
     setInterval(function() {
-      fs.readFile(
-        "../Capstone_program/exp_result.json",
-        "utf-8",
-        (err, data) => {
-          socket.emit("send", data);
-        }
-      );
+      fs.readFile("../exp_result.json", "utf-8", (err, data) => {
+        socket.emit("send", data);
+      });
     }, 1000);
   });
 
@@ -75,7 +71,7 @@ io.on("connection", socket => {
       }
     });
 
-    fs.writeFile("../Capstone_program/experiment.json", tempJSON, err => {
+    fs.writeFile("../experiment.json", tempJSON, err => {
       if (err) {
         console.log("Error writing file", err);
       } else {
