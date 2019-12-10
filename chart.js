@@ -3,11 +3,12 @@ let tempTime = [];
 let pidData = [];
 let pidTime = [];
 
-let socket = io.connect("http://localhost:4000");
+let socket = io.connect("192.168.137.105");
 
 const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
 const cancelBtn = document.getElementById("cancel");
+const pictureBtn = document.getElementById("picture");
 const currentTemp = document.getElementById("current-temp");
 const currentTime = document.getElementById("current-time");
 const targetTemp = document.getElementById("target-temp");
@@ -43,10 +44,18 @@ form.addEventListener("submit", function(e) {
 
 cancelBtn.addEventListener("click", function(e) {
   e.preventDefault();
+
   executionBtn.removeAttribute("disabled");
   targetTemp.removeAttribute("disabled");
   targetTime.removeAttribute("disabled");
+
   socket.emit("turn off");
+});
+
+pictureBtn.addEventListener("click", function(e) {
+  e.preventDefault();
+
+  socket.emit("take a picture");
 });
 
 socket.on("already on", function(data) {

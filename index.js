@@ -23,8 +23,7 @@ app.post("/", (req, res) => {
     Option: {
       t_temp: req.body.temp,
       t_time: req.body.time,
-      start_exp: 1,
-      p_capture: 1
+      start_exp: 1
     }
   });
 
@@ -66,8 +65,7 @@ io.on("connection", socket => {
       Option: {
         t_temp: null,
         t_time: null,
-        start_exp: 0,
-        p_capture: 0
+        start_exp: 0
       }
     });
 
@@ -78,10 +76,27 @@ io.on("connection", socket => {
         console.log("Successfully wrote file");
       }
     });
+
     socket.disconnect();
   });
 
   socket.on("disconnect", function() {
     console.log("socket io is disconnected");
+  });
+
+  socket.on("take a picture", function() {
+    const tempJSON2 = JSON.stringify({
+      Option: {
+        p_capture: 1
+      }
+    });
+
+    fs.writeFile("../photo_capture.json", tempJSON2, err => {
+      if (err) {
+        console.log("Error writing file", err);
+      } else {
+        console.log("Successfully wrote file");
+      }
+    });
   });
 });
