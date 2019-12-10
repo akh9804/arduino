@@ -3,7 +3,7 @@ let tempTime = [];
 let pidData = [];
 let pidTime = [];
 
-let socket = io.connect("https://guarded-brook-94951.herokuapp.com/");
+let socket = io.connect("http://localhost:4000");
 
 const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
@@ -47,6 +47,17 @@ cancelBtn.addEventListener("click", function(e) {
   targetTemp.removeAttribute("disabled");
   targetTime.removeAttribute("disabled");
   socket.emit("turn off");
+});
+
+socket.on("already on", function(data) {
+  targetTemp.value = data.temp;
+  targetTime.value = data.time;
+
+  targetTemp.setAttribute("disabled", true);
+  targetTime.setAttribute("disabled", true);
+  executionBtn.setAttribute("disabled", true);
+
+  socket.emit("turn on", { success: true });
 });
 
 socket.on("send", function(raw_data) {

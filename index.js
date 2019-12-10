@@ -20,15 +20,15 @@ app.get("/", (req, res) => {
 
 app.post("/", (req, res) => {
   const tempJSON = JSON.stringify({
-    "t-temp": req.body.temp,
-    "t-time": req.body.time,
-    start_exp: 1,
-    stop_exp: 0,
-    "p-capture": 1,
-    "v-capture": 1
+    Option: {
+      t_temp: req.body.temp,
+      t_time: req.body.time,
+      start_exp: 1,
+      p_capture: 1
+    }
   });
 
-  fs.writeFile("./python.json", tempJSON, err => {
+  fs.writeFile("../Capstone_program/experiment.json", tempJSON, err => {
     if (err) {
       console.log("Error writing file", err);
     } else {
@@ -42,33 +42,40 @@ app.post("/", (req, res) => {
 io.on("connection", socket => {
   console.log("socket io is connected");
 
+  fs.readFile("../Capstone_program/experiment.json", "utf-8", (err, data) => {
+    data = JSON.parse(data).Option;
+    if (data["start_exp"] === 1) {
+      socket.emit("already on", {
+        temp: data["t_temp"],
+        time: data["t_time"]
+      });
+    }
+  });
+
   socket.on("turn on", function(message) {
     console.log(message);
     setInterval(function() {
-      const data = JSON.stringify({
-        experiment: [
-          {
-            second: Math.floor(Math.random() * 100),
-            temperature: Math.floor(Math.random() * 50 + 40),
-            pid: Math.floor(Math.random() * 100)
-          }
-        ]
-      });
-      socket.emit("send", data);
+      fs.readFile(
+        "../Capstone_program/exp_result.json",
+        "utf-8",
+        (err, data) => {
+          socket.emit("send", data);
+        }
+      );
     }, 1000);
   });
 
   socket.on("turn off", function() {
     const tempJSON = JSON.stringify({
-      "t-temp": null,
-      "t-time": null,
-      start_exp: 0,
-      stop_exp: 1,
-      "p-capture": 0,
-      "v-capture": 0
+      Option: {
+        t_temp: null,
+        t_time: null,
+        start_exp: 0,
+        p_capture: 0
+      }
     });
 
-    fs.writeFile("./python.json", tempJSON, err => {
+    fs.writeFile("../Capstone_program/experiment.json", tempJSON, err => {
       if (err) {
         console.log("Error writing file", err);
       } else {
