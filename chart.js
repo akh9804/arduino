@@ -9,6 +9,7 @@ const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
 const cancelBtn = document.getElementById("cancel");
 const pictureBtn = document.getElementById("picture");
+const pictureDiv = document.getElementById("image__div");
 const currentTemp = document.getElementById("current-temp");
 const currentTime = document.getElementById("current-time");
 const targetTemp = document.getElementById("target-temp");
@@ -54,6 +55,10 @@ cancelBtn.addEventListener("click", function(e) {
 
 pictureBtn.addEventListener("click", function(e) {
   e.preventDefault();
+
+  const img = document.createElement("img");
+  img.src = "../image.jpg";
+  pictureDiv.appendChild(img);
 
   socket.emit("take a picture");
 });
