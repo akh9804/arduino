@@ -9,7 +9,7 @@ const form = document.getElementById("form");
 const executionBtn = document.getElementById("execution");
 const cancelBtn = document.getElementById("cancel");
 const pictureBtn = document.getElementById("picture");
-const pictureDiv = document.getElementById("image__div");
+const image = document.getElementById("image");
 const currentTemp = document.getElementById("current-temp");
 const currentTime = document.getElementById("current-time");
 const targetTemp = document.getElementById("target-temp");
@@ -56,10 +56,6 @@ cancelBtn.addEventListener("click", function(e) {
 pictureBtn.addEventListener("click", function(e) {
   e.preventDefault();
 
-  const img = document.createElement("img");
-  img.src = "../image.jpg";
-  pictureDiv.appendChild(img);
-
   socket.emit("take a picture");
 });
 
@@ -76,7 +72,6 @@ socket.on("already on", function(data) {
 
 socket.on("send", function(raw_data) {
   let data = JSON.parse(raw_data).Now;
-  console.log(data);
 
   tempData.push(data.temperature);
   pidData.push(data.pid);
@@ -85,6 +80,11 @@ socket.on("send", function(raw_data) {
 
   currentTemp.innerText = data.temperature;
   currentTime.innerText = data.second;
+
+  let time = new Date().getTime();
+  let src = "../image.jpg?time=" + time;
+
+  image.setAttribute("src", src);
 
   const temp = document.getElementById("temp__chart");
   const pid = document.getElementById("pid__chart");
