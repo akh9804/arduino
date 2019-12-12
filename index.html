@@ -52,11 +52,11 @@
             name="target__temp"
             id="target-temp"
             min="40"
-            max="90"
+            max="110"
             required
           />
           <small class="form-text text-muted"
-            >40 - 90도 이내의 온도를 입력해주세요.</small
+            >40 - 110도 이내의 온도를 입력해주세요.</small
           >
         </div>
         <div class="form-group">
@@ -95,13 +95,7 @@
       <button type="button" class="btn btn-primary" id="picture">
         사진 촬영
       </button>
-      <div class="image__div" id="image__div">
-        <img
-          src="../image.jpg"
-          id="image"
-          onerror="this.style.display='none'"
-        />
-      </div>
+      <div class="image__div" id="image__div"></div>
     </div>
   </body>
   <script src="chart.js"></script>
