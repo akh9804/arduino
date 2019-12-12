@@ -79,7 +79,7 @@ socket.on("send", function(raw_data) {
   pidTime.push(data.second);
 
   currentTemp.innerText = data.temperature;
-  currentTime.innerText = Math.floor(data.second);
+  currentTime.innerText = Math.floor(data.second / 60);
 
   let time = new Date().getTime();
   let src = "../image.jpg?time=" + time;
