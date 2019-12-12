@@ -49,15 +49,18 @@ io.on("connection", socket => {
         time: data["t_time"]
       });
     }
-
-    if (data["start_exp"] === 0) {
-      socket.disconnect();
-    }
   });
 
   socket.on("turn on", function(message) {
     console.log(message);
     setInterval(function() {
+      fs.readFile("../experiment.json", "utf-8", (err, data) => {
+        data = JSON.parse(data).Option;
+        if (data["start_exp"] === 0) {
+          socket.disconnect();
+        }
+      });
+
       fs.readFile("../exp_result.json", "utf-8", (err, data) => {
         socket.emit("send", data);
       });
